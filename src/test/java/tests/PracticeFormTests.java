@@ -6,64 +6,65 @@ import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static tests.TestData.*;
 
 public class PracticeFormTests extends TestBase {
 
     @Test
     void studentRegistrationForm() {
         open("/automation-practice-form");
-        $("#firstName").setValue("Ivan");
-        $("#lastName").setValue("Ivanov");
-        $("#userEmail").setValue("ptichka@mail.ru");
-        $("#genterWrapper").find(byText("Male")).click();
-        $("#userNumber").setValue("1234567890");
+        $("#firstName").setValue(firstName);
+        $("#lastName").setValue(lastName);
+        $("#userEmail").setValue(userEmail);
+        $("#genterWrapper").find(byText(genterWrapper)).click();
+        $("#userNumber").setValue(userNumber);
         $("#dateOfBirthInput").click();
-        $(".react-datepicker__month-select").selectOption("April");
-        $(".react-datepicker__year-select").selectOption("2000");
-        $(".react-datepicker__day--010").click();
-        $("#subjectsInput").setValue("History").pressEnter();
-        $("#hobbiesWrapper").find(byText("Reading")).click();
-        $("#uploadPicture").uploadFromClasspath("screen.jpg");
-        $("#currentAddress").setValue("Moscow, Red square");
-        $("#react-select-3-input").setValue("Haryana").pressEnter();
-        $("#react-select-4-input").setValue("Karnal").pressEnter();
+        $(".react-datepicker__month-select").selectOption(monthOfBirth);
+        $(".react-datepicker__year-select").selectOption(yearOfBirth);
+        $(".react-datepicker__day--0"+dayOfBirth).click();
+        $("#subjectsInput").setValue(subject).pressEnter();
+        $("#hobbiesWrapper").find(byText(hobbiesReading)).click();
+        $("#uploadPicture").uploadFromClasspath(nameOfFile);
+        $("#currentAddress").setValue(currentAddress);
+        $("#react-select-3-input").setValue(country).pressEnter();
+        $("#react-select-4-input").setValue(city).pressEnter();
         $("#submit").click();
 
-        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $$("tbody tr").findBy(text("Ivan Ivanov"));
-        $$("tbody tr").findBy(text("ptichka@mail.ru"));
-        $$("tbody tr").findBy(text("Male"));
-        $$("tbody tr").findBy(text("1234567890"));
-        $$("tbody tr").findBy(text("10 April,2000"));
-        $$("tbody tr").findBy(text("History"));
-        $$("tbody tr").findBy(text("Hobbies")).shouldHave(text("R"));
-        $$("tbody tr").findBy(text("screen.jpg"));
-        $$("tbody tr").findBy(text("Moscow, Red square"));
-        $$("tbody tr").findBy(text("Haryana Karnal"));
+        $("#example-modal-sizes-title-lg").shouldHave(text(messageSubmit));
+        $(".modal-body").shouldHave(text(userName));
+        $(".modal-body").shouldHave(text(userEmail));
+        $(".modal-body").shouldHave(text(genterWrapper));
+        $(".modal-body").shouldHave(text(userNumber));
+        $(".modal-body").shouldHave(text(dayOfBirth + " " + monthOfBirth + "," + yearOfBirth));
+        $(".modal-body").shouldHave(text(subject));
+        $(".modal-body").shouldHave(text("Hobbies")).shouldHave(text(hobbiesReading));
+        $(".modal-body").shouldHave(text(nameOfFile));
+        $(".modal-body").shouldHave(text(currentAddress));
+        $(".modal-body").shouldHave(text(country +" "+ city));
     }
 
     @Test
     void onlyRequiredFields() {
         open("/automation-practice-form");
-        $("#firstName").setValue("Ivan");
-        $("#lastName").setValue("Ivanov");
-        $("#genterWrapper").find(byText("Male")).click();
-        $("#userNumber").setValue("1234567890");
+        $("#firstName").setValue(firstName);
+        $("#lastName").setValue(lastName);
+        $("#genterWrapper").find(byText(genterWrapper)).click();
+        $("#userNumber").setValue(userNumber);
         $("#submit").click();
 
 
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
-        $(".table-responsive").shouldHave(text("Ivan Ivanov"));
-        $(".table-responsive").shouldHave(text("Male"));
-        $(".table-responsive").shouldHave(text("1234567890"));
+        $(".table-responsive").shouldHave(text(userName));
+        $(".table-responsive").shouldHave(text(genterWrapper));
+        $(".table-responsive").shouldHave(text(userNumber));
     }
 
     @Test
     void negativeNameFields() {
         open("/automation-practice-form");
-        $("#lastName").setValue("Ivanov");
-        $("#genterWrapper").find(byText("Male")).click();
-        $("#userNumber").setValue("1234567890");
+        $("#lastName").setValue(lastName);
+        $("#genterWrapper").find(byText(genterWrapper)).click();
+        $("#userNumber").setValue(userNumber);
         $("#submit").click();
 
         $("#firstName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
@@ -72,9 +73,9 @@ public class PracticeFormTests extends TestBase {
     @Test
     void negativeLastNameFields() {
         open("/automation-practice-form");
-        $("#firstName").setValue("Ivan");
-        $("#genterWrapper").find(byText("Male")).click();
-        $("#userNumber").setValue("1234567890");
+        $("#firstName").setValue(firstName);
+        $("#genterWrapper").find(byText(genterWrapper)).click();
+        $("#userNumber").setValue(userNumber);
         $("#submit").click();
 
         $("#lastName").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
@@ -83,9 +84,9 @@ public class PracticeFormTests extends TestBase {
     @Test
     void negativeGenderFields() {
         open("/automation-practice-form");
-        $("#firstName").setValue("Ivan");
-        $("#lastName").setValue("Ivanov");
-        $("#userNumber").setValue("1234567890");
+        $("#firstName").setValue(firstName);
+        $("#lastName").setValue(lastName);
+        $("#userNumber").setValue(userNumber);
         $("#submit").click();
 
         $("[value=Male]").shouldHave(cssValue("border-color", "rgb(220, 53, 69)"));
