@@ -6,7 +6,7 @@ import static com.codeborne.selenide.Condition.cssValue;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static tests.TestData.*;
+import static testsdata.TestData.*;
 
 public class PracticeFormTests extends TestBase {
 
